@@ -5,7 +5,7 @@ const fastify: FastifyInstance = Fastify({
 });
 
 fastify.get("/check",() => {
-  return { status: "Server running" };
+  return { status: "Server runningst" };
 });
 
 const start = async () => {
