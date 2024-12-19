@@ -4,9 +4,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
-const fastify: FastifyInstance = Fastify({
-  logger: true
-});
+const fastify: FastifyInstance = Fastify({ logger: true });
 
 fastify.get("/check", () => {
   return { status: "Server running" };
