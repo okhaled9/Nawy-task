@@ -4,13 +4,13 @@ const fastify: FastifyInstance = Fastify({
   logger: true
 });
 
-fastify.get("/check", async () => {
+fastify.get("/check",() => {
   return { status: "Server running" };
 });
 
 const start = async () => {
   try {
-    await fastify.listen({ port: 8000 });
+    await fastify.listen({ host: "0.0.0.0", port: 8000 });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
