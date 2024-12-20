@@ -17,11 +17,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const imageFolderPath = resolve(__dirname, "..", "public", "images");
 
-// Ensure images directory exists
-await import("fs/promises").then(async (fs) => {
-  await fs.mkdir(imageFolderPath, { recursive: true });
-});
-
 fastify.register(fastifyMultipart);
 fastify.register(fastifyStatic, {
   root: imageFolderPath,
@@ -98,6 +93,10 @@ fastify.post("/apartments", async (req, reply) => {
 
   // Only save files if we have all required fields
   const filenames: string[] = [];
+  if (bufferedFiles.length > 0) {
+    fs.mkdirSync(imageFolderPath, { recursive: true });
+  }
+  
   for (const { buffer, ext } of bufferedFiles) {
     const now = new Date();
     const date = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
