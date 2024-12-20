@@ -50,24 +50,26 @@ fastify.get<{ Params: { id: number } }>("/apartments/:id", async (req, rep) => {
 
 fastify.post("/apartments", async (req, reply) => {
   const parts = req.parts();
-
-  let title: string | undefined;
-  let address: string | undefined;
-  let description: string | undefined;
-  let area: number | undefined;
-  let price: number | undefined;
   let fileName: string | undefined;
+  const apartment: typeof apartmentsTable.$inferInsert = {
+    title: '',
+    address: '',
+    area: 0,
+    price: 0
+  };
 
   for await (const part of parts) {
     if (part.type === "file") {
-      if (!fs.existsSync(imageFolderPath)) {
-        fs.mkdirSync(imageFolderPath, { recursive: true });
-      }
-
       const fileExt = part.filename.split(".").pop();
-      fileName = `${Date.now()}.${fileExt}`;
+      if (!fileExt) {
+        return reply.status(400).send({ error: "Invalid file format" });
+      }
+      const now = new Date();
+      const date = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
+      const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+      fileName = `${date}_${time}.${fileExt}`;
       const filePath = resolve(imageFolderPath, fileName);
-
+      
       // Save the file
       part.file.pipe(fs.createWriteStream(filePath));
     } else {
@@ -75,39 +77,25 @@ fastify.post("/apartments", async (req, reply) => {
       const fieldValue = part.value as string;
       switch (part.fieldname) {
         case "title":
-          title = fieldValue;
-          break;
         case "address":
-          address = fieldValue;
-          break;
         case "description":
-          description = fieldValue;
+          apartment[part.fieldname] = fieldValue;
           break;
         case "area":
-          const parsedArea = parseInt(fieldValue);
-          area = !isNaN(parsedArea) ? parsedArea : undefined;
-          break;
         case "price":
-          const parsedPrice = parseInt(fieldValue);
-          price = !isNaN(parsedPrice) ? parsedPrice : undefined;
+          const parsedValue = parseInt(fieldValue);
+          if (!isNaN(parsedValue)) {
+            apartment[part.fieldname] = parsedValue;
+          }
           break;
       }
     }
   }
 
   // Validate required fields
-  if (!title || !address || !area || !price) {
+  if (!apartment.title || !apartment.address || !apartment.area || !apartment.price) {
     return reply.status(400).send({ error: "Missing required fields" });
   }
-
-  // Save to database
-  const apartment = {
-    title,
-    address,
-    description: description || undefined,
-    area,
-    price,
-  };
 
   const result = await db.insert(apartmentsTable).values(apartment);
   return { ...result, fileName };
@@ -115,14 +103,6 @@ fastify.post("/apartments", async (req, reply) => {
 
 fastify.get("/wipe-apartments", () => {
   return db.delete(apartmentsTable);
-});
-
-fastify.post("/test", async (req) => {
-  const parts = req.parts();
-  for await (const part of parts) {
-    // if(!part.file)
-    console.log(await part.type);
-  }
 });
 
 const start = async () => {
