@@ -17,7 +17,9 @@ export const apartmentsRelations = relations(apartmentsTable, ({ many }) => ({
 export const imagesTable = pgTable("images", {
   id: serial().primaryKey(),
   path: varchar({ length: 255 }).notNull(),
-  apartmentId: integer().notNull().references(() => apartmentsTable.id, { onDelete: 'cascade' }),
+  apartmentId: integer()
+    .notNull()
+    .references(() => apartmentsTable.id, { onDelete: "cascade" }),
 });
 
 export const imagesRelations = relations(imagesTable, ({ one }) => ({

@@ -24,7 +24,10 @@ function server() {
   fastify.get("/apartments", getApartments);
   fastify.get<{ Params: { id: number } }>("/apartments/:id", getApartmentById);
   fastify.post("/apartments", createApartment);
-  fastify.delete<{ Params: { id: number } }>("/apartments/:id", deleteApartment);
+  fastify.delete<{ Params: { id: number } }>(
+    "/apartments/:id",
+    deleteApartment
+  );
   fastify.get("/wipe-apartments", wipeApartments);
 
   return fastify;

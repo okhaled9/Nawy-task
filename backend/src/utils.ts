@@ -34,12 +34,12 @@ export async function getAllApartments(): Promise<ApartmentWithImages[]> {
     .execute();
 
   return results.reduce<ApartmentWithImages[]>((acc, row) => {
-    const existingApartment = acc.find(a => a.id === row.apartments.id);
+    const existingApartment = acc.find((a) => a.id === row.apartments.id);
 
     if (!existingApartment) {
       acc.push({
         ...row.apartments,
-        images: row.images ? [row.images] : []
+        images: row.images ? [row.images] : [],
       });
     } else if (row.images) {
       existingApartment.images.push(row.images);
@@ -49,7 +49,9 @@ export async function getAllApartments(): Promise<ApartmentWithImages[]> {
   }, []);
 }
 
-export async function getApartmentByIdFromDb(id: number): Promise<ApartmentWithImages | null> {
+export async function getApartmentByIdFromDb(
+  id: number
+): Promise<ApartmentWithImages | null> {
   const results = await db
     .select()
     .from(apartmentsTable)
@@ -65,7 +67,7 @@ export async function getApartmentByIdFromDb(id: number): Promise<ApartmentWithI
     if (!acc.id) {
       return {
         ...row.apartments,
-        images: row.images ? [row.images] : []
+        images: row.images ? [row.images] : [],
       };
     }
     if (row.images) {
@@ -75,12 +77,19 @@ export async function getApartmentByIdFromDb(id: number): Promise<ApartmentWithI
   }, {} as ApartmentWithImages);
 }
 
-export async function createApartmentInDb(apartment: typeof apartmentsTable.$inferInsert) {
-  const [result] = await db.insert(apartmentsTable).values(apartment).returning();
+export async function createApartmentInDb(
+  apartment: typeof apartmentsTable.$inferInsert
+) {
+  const [result] = await db
+    .insert(apartmentsTable)
+    .values(apartment)
+    .returning();
   return result;
 }
 
-export async function createImagesInDb(imageRecords: { path: string; apartmentId: number }[]) {
+export async function createImagesInDb(
+  imageRecords: { path: string; apartmentId: number }[]
+) {
   if (imageRecords.length > 0) {
     return db.insert(imagesTable).values(imageRecords);
   }
@@ -103,24 +112,19 @@ export async function deleteApartmentById(id: number): Promise<boolean> {
     return false;
   }
 
-  // Delete image files
   await deleteImageFiles(apartment.images);
-  
-  // Delete apartment (images will be cascade deleted)
+
   await db.delete(apartmentsTable).where(eq(apartmentsTable.id, id));
   return true;
 }
 
 export async function wipeDatabase() {
-  // Get all apartments to get their image paths
   const apartments = await getAllApartments();
-  
-  // Delete all image files
+
   for (const apartment of apartments) {
     await deleteImageFiles(apartment.images);
   }
 
-  // Delete all apartments (images will be cascade deleted)
   return db.delete(apartmentsTable);
 }
 

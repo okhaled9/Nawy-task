@@ -1,18 +1,18 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { apartmentsTable } from "./drizzle/schema.js";
-import { 
-  bufferFile, 
-  processFormField, 
-  validateApartment, 
-  generateFilename, 
-  saveFile, 
-  BufferedFile, 
-  getAllApartments, 
-  getApartmentByIdFromDb, 
-  createApartmentInDb, 
-  createImagesInDb, 
+import {
+  bufferFile,
+  processFormField,
+  validateApartment,
+  generateFilename,
+  saveFile,
+  BufferedFile,
+  getAllApartments,
+  getApartmentByIdFromDb,
+  createApartmentInDb,
+  createImagesInDb,
   wipeDatabase,
-  deleteApartmentById
+  deleteApartmentById,
 } from "./utils.js";
 
 export async function checkServer() {
@@ -23,11 +23,14 @@ export async function getApartments() {
   return getAllApartments();
 }
 
-export async function getApartmentById(request: FastifyRequest<{
-  Params: { id: number };
-}>, reply: FastifyReply) {
+export async function getApartmentById(
+  request: FastifyRequest<{
+    Params: { id: number };
+  }>,
+  reply: FastifyReply
+) {
   const apartment = await getApartmentByIdFromDb(request.params.id);
-  
+
   if (!apartment) {
     return reply.status(404).send({ error: "apartment not found" });
   }
@@ -35,14 +38,17 @@ export async function getApartmentById(request: FastifyRequest<{
   return apartment;
 }
 
-export async function createApartment(request: FastifyRequest, reply: FastifyReply) {
+export async function createApartment(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
   const parts = request.parts();
   const bufferedFiles: BufferedFile[] = [];
   const apartment: typeof apartmentsTable.$inferInsert = {
-    title: '',
-    address: '',
+    title: "",
+    address: "",
     area: 0,
-    price: 0
+    price: 0,
   };
 
   for await (const part of parts) {
@@ -62,18 +68,18 @@ export async function createApartment(request: FastifyRequest, reply: FastifyRep
   }
 
   const result = await createApartmentInDb(apartment);
-  
+
   const filenames: string[] = [];
   const imageRecords = [];
-  
+
   for (const { buffer, ext } of bufferedFiles) {
     const filename = generateFilename(ext);
     await saveFile(buffer, filename);
     filenames.push(filename);
-    
+
     imageRecords.push({
       path: filename,
-      apartmentId: result.id
+      apartmentId: result.id,
     });
   }
 
@@ -82,16 +88,19 @@ export async function createApartment(request: FastifyRequest, reply: FastifyRep
   return { ...result, images: imageRecords };
 }
 
-export async function deleteApartment(request: FastifyRequest<{
-  Params: { id: number };
-}>, reply: FastifyReply) {
+export async function deleteApartment(
+  request: FastifyRequest<{
+    Params: { id: number };
+  }>,
+  reply: FastifyReply
+) {
   const success = await deleteApartmentById(request.params.id);
-  
+
   if (!success) {
     return reply.status(404).send({ error: "apartment not found" });
   }
 
-  return { success: true };
+  return reply.status(204).send;
 }
 
 export async function wipeApartments() {
