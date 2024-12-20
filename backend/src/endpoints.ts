@@ -1,14 +1,17 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { eq } from "drizzle-orm";
 import { apartmentsTable } from "./drizzle/schema.js";
-import {
-  db,
-  bufferFile,
-  processFormField,
-  validateApartment,
-  generateFilename,
-  saveFile,
-  BufferedFile,
+import { 
+  bufferFile, 
+  processFormField, 
+  validateApartment, 
+  generateFilename, 
+  saveFile, 
+  BufferedFile, 
+  getAllApartments, 
+  getApartmentByIdFromDb, 
+  createApartmentInDb, 
+  createImagesInDb, 
+  wipeDatabase 
 } from "./utils.js";
 
 export async function checkServer() {
@@ -16,37 +19,29 @@ export async function checkServer() {
 }
 
 export async function getApartments() {
-  return db.select().from(apartmentsTable);
+  return getAllApartments();
 }
 
-export async function getApartmentById(
-  request: FastifyRequest<{
-    Params: { id: number };
-  }>,
-  reply: FastifyReply
-) {
-  const id = request.params.id;
-  const apt = await db
-    .select()
-    .from(apartmentsTable)
-    .where(eq(apartmentsTable.id, id));
-
-  if (apt.length === 0)
+export async function getApartmentById(request: FastifyRequest<{
+  Params: { id: number };
+}>, reply: FastifyReply) {
+  const apartment = await getApartmentByIdFromDb(request.params.id);
+  
+  if (!apartment) {
     return reply.status(404).send({ error: "apartment not found" });
-  return apt;
+  }
+
+  return apartment;
 }
 
-export async function createApartment(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function createApartment(request: FastifyRequest, reply: FastifyReply) {
   const parts = request.parts();
   const bufferedFiles: BufferedFile[] = [];
   const apartment: typeof apartmentsTable.$inferInsert = {
-    title: "",
-    address: "",
+    title: '',
+    address: '',
     area: 0,
-    price: 0,
+    price: 0
   };
 
   for await (const part of parts) {
@@ -65,17 +60,27 @@ export async function createApartment(
     return reply.status(400).send({ error: "Missing required fields" });
   }
 
+  const result = await createApartmentInDb(apartment);
+  
   const filenames: string[] = [];
+  const imageRecords = [];
+  
   for (const { buffer, ext } of bufferedFiles) {
     const filename = generateFilename(ext);
     await saveFile(buffer, filename);
     filenames.push(filename);
+    
+    imageRecords.push({
+      path: filename,
+      apartmentId: result.id
+    });
   }
 
-  const result = await db.insert(apartmentsTable).values(apartment);
-  return { ...result, filenames };
+  await createImagesInDb(imageRecords);
+
+  return { ...result, images: imageRecords };
 }
 
 export async function wipeApartments() {
-  return db.delete(apartmentsTable);
+  return wipeDatabase();
 }
