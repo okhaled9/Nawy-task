@@ -50,7 +50,8 @@ fastify.get<{ Params: { id: number } }>("/apartments/:id", async (req, rep) => {
 
 fastify.post("/apartments", async (req, reply) => {
   const parts = req.parts();
-  let fileName: string | undefined;
+  let fileBuffer: Buffer | undefined;
+  let fileExt: string | undefined;
   const apartment: typeof apartmentsTable.$inferInsert = {
     title: '',
     address: '',
@@ -60,18 +61,12 @@ fastify.post("/apartments", async (req, reply) => {
 
   for await (const part of parts) {
     if (part.type === "file") {
-      const fileExt = part.filename.split(".").pop();
+      fileExt = part.filename.split(".").pop();
       if (!fileExt) {
         return reply.status(400).send({ error: "Invalid file format" });
       }
-      const now = new Date();
-      const date = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
-      const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-      fileName = `${date}_${time}.${fileExt}`;
-      const filePath = resolve(imageFolderPath, fileName);
-      
-      // Save the file
-      part.file.pipe(fs.createWriteStream(filePath));
+      // Buffer the file instead of saving it
+      fileBuffer = await part.toBuffer();
     } else {
       // Process form fields
       const fieldValue = part.value as string;
@@ -95,6 +90,19 @@ fastify.post("/apartments", async (req, reply) => {
   // Validate required fields
   if (!apartment.title || !apartment.address || !apartment.area || !apartment.price) {
     return reply.status(400).send({ error: "Missing required fields" });
+  }
+
+  // Only save file if we have all required fields
+  let fileName: string | undefined;
+  if (fileBuffer && fileExt) {
+    const now = new Date();
+    const date = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
+    const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+    fileName = `${date}_${time}.${fileExt}`;
+    const filePath = resolve(imageFolderPath, fileName);
+    
+    // Save the file only after validation
+    await fs.promises.writeFile(filePath, fileBuffer);
   }
 
   const result = await db.insert(apartmentsTable).values(apartment);
