@@ -1,6 +1,7 @@
 import Fastify, { FastifyInstance } from "fastify";
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
+import { apartmentsTable } from "./db/schema.js";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
@@ -8,6 +9,14 @@ const fastify: FastifyInstance = Fastify({ logger: true });
 
 fastify.get("/check", () => {
   return { status: "Server running" };
+});
+
+fastify.get("/list", () => {
+  return db.select().from(apartmentsTable);
+});
+
+fastify.get("/wipe", () => {
+  return db.delete(apartmentsTable);
 });
 
 const start = async () => {

@@ -24,7 +24,9 @@ services:
       - CHOKIDAR_USEPOLLING=true
     env_file:
       - .env
-
+    depends_on:
+      - database
+      
   database:
     image: postgres:17-alpine
     container_name: postgres
