@@ -1,21 +1,41 @@
 import Fastify, { FastifyInstance } from "fastify";
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { apartmentsTable } from "./db/schema.js";
+import { eq } from "drizzle-orm";
+import { apartmentsTable } from "./drizzle/schema.js";
 
 const db = drizzle(process.env.DATABASE_URL!);
 
 const fastify: FastifyInstance = Fastify({ logger: true });
 
-fastify.get("/check", () => {
+fastify.get("/check-server", () => {
   return { status: "Server running" };
 });
 
-fastify.get("/list", () => {
+fastify.get("/apartments", () => {
   return db.select().from(apartmentsTable);
 });
 
-fastify.get("/wipe", () => {
+fastify.get("/apartments/:id", (req) => {
+  const params = req.params;
+  const id = params.id;
+
+  return db.select().from(apartmentsTable).where(eq(apartmentsTable.id, id));
+});
+
+fastify.post<{ Body: typeof apartmentsTable.$inferInsert }>("/apartments", (req) => {
+  const apartment: typeof apartmentsTable.$inferInsert = {
+    title: req.body.title,
+    address: req.body.address,
+    description: req.body.description,
+    area: req.body.area,
+    price: req.body.price,
+  };
+
+  return db.insert(apartmentsTable).values(apartment);
+});
+
+fastify.get("/wipe-apartments", () => {
   return db.delete(apartmentsTable);
 });
 
