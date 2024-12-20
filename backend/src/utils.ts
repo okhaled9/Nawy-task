@@ -86,8 +86,41 @@ export async function createImagesInDb(imageRecords: { path: string; apartmentId
   }
 }
 
+async function deleteImageFiles(images: { path: string }[]) {
+  for (const image of images) {
+    const filePath = resolve(imageFolderPath, image.path);
+    try {
+      await fs.promises.unlink(filePath);
+    } catch (error) {
+      console.error(`Failed to delete image file: ${filePath}`, error);
+    }
+  }
+}
+
+export async function deleteApartmentById(id: number): Promise<boolean> {
+  const apartment = await getApartmentByIdFromDb(id);
+  if (!apartment) {
+    return false;
+  }
+
+  // Delete image files
+  await deleteImageFiles(apartment.images);
+  
+  // Delete apartment (images will be cascade deleted)
+  await db.delete(apartmentsTable).where(eq(apartmentsTable.id, id));
+  return true;
+}
+
 export async function wipeDatabase() {
-  await db.delete(imagesTable);
+  // Get all apartments to get their image paths
+  const apartments = await getAllApartments();
+  
+  // Delete all image files
+  for (const apartment of apartments) {
+    await deleteImageFiles(apartment.images);
+  }
+
+  // Delete all apartments (images will be cascade deleted)
   return db.delete(apartmentsTable);
 }
 

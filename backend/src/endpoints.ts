@@ -11,7 +11,8 @@ import {
   getApartmentByIdFromDb, 
   createApartmentInDb, 
   createImagesInDb, 
-  wipeDatabase 
+  wipeDatabase,
+  deleteApartmentById
 } from "./utils.js";
 
 export async function checkServer() {
@@ -79,6 +80,18 @@ export async function createApartment(request: FastifyRequest, reply: FastifyRep
   await createImagesInDb(imageRecords);
 
   return { ...result, images: imageRecords };
+}
+
+export async function deleteApartment(request: FastifyRequest<{
+  Params: { id: number };
+}>, reply: FastifyReply) {
+  const success = await deleteApartmentById(request.params.id);
+  
+  if (!success) {
+    return reply.status(404).send({ error: "apartment not found" });
+  }
+
+  return { success: true };
 }
 
 export async function wipeApartments() {
