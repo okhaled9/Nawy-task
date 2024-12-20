@@ -16,12 +16,12 @@ fastify.get("/apartments", () => {
   return db.select().from(apartmentsTable);
 });
 
-fastify.get("/apartments/:id", (req) => {
-  const params = req.params;
-  const id = params.id;
+fastify.get<{ Params: { id: number } }>("/apartments/:id", (req) => {
+  const id = req.params.id;
 
   return db.select().from(apartmentsTable).where(eq(apartmentsTable.id, id));
 });
+
 
 fastify.post<{ Body: typeof apartmentsTable.$inferInsert }>("/apartments", (req) => {
   const apartment: typeof apartmentsTable.$inferInsert = {
