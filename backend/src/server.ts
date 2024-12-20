@@ -1,7 +1,13 @@
 import Fastify from "fastify";
 import fastifyMultipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
-import { checkServer, getApartments, getApartmentById, createApartment, wipeApartments } from "./endpoints.js";
+import {
+  checkServer,
+  getApartments,
+  getApartmentById,
+  createApartment,
+  wipeApartments,
+} from "./endpoints.js";
 import { imageFolderPath } from "./utils.js";
 
 function server() {
