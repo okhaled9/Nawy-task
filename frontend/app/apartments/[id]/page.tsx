@@ -2,6 +2,7 @@ import { ApartmentInterface } from "@/components/ApartmentCard";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
+import DeleteApartmentButton from "@/components/DeleteApartmentButton";
 import ImageGallery from "@/components/ImageGallery";
 
 async function getApartment(id: string): Promise<ApartmentInterface | null> {
@@ -68,7 +69,7 @@ export default async function ApartmentPage({ params }: PageProps) {
         </Button>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-[1fr,2fr,auto]">
         <ImageGallery images={apartment.images || []} title={apartment.title} />
 
         <div>
@@ -93,6 +94,10 @@ export default async function ApartmentPage({ params }: PageProps) {
               <p className="text-gray-600">{apartment.description}</p>
             </div>
           )}
+        </div>
+
+        <div className="flex items-start pt-4">
+          <DeleteApartmentButton apartmentId={id} />
         </div>
       </div>
     </div>
