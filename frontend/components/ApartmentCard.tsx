@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface ApartmentImage {
   id: number;
@@ -22,8 +23,11 @@ export default function ApartmentCard({
   apartment: ApartmentInterface;
 }) {
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow-md">
-      <div className="relative aspect-video bg-gray-200">
+    <Link
+      href={`/apartments/${apartment.id}`}
+      className="block overflow-hidden rounded-lg bg-white shadow-md transition-transform hover:scale-[1.02]"
+    >
+      <div className="relative bg-gray-200">
         {apartment.images?.[0] && (
           <Image
             src={`http://localhost:8000/static/${apartment.images[0].path}`}
@@ -50,6 +54,6 @@ export default function ApartmentCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
