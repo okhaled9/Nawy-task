@@ -29,13 +29,15 @@ A web application for managing apartment listings.
   - Easy deployment across different platforms
 
 ## API Endpoints
+The backend is exposed at `http://localhost:8000`.
 
 The backend provides the following REST API endpoints:
 
 ### GET Endpoints
-- `/check` - Health check endpoint to verify server status
+- `/check-server` - Health check endpoint to verify server status
 - `/apartments` - Retrieve all apartment listings
 - `/apartments/:id` - Get details of a specific apartment by ID
+- `/wipe-apartments` - Development endpoint to clear all apartments (use with caution)
 
 ### POST Endpoints
 - `/apartments` - Create a new apartment listing
@@ -47,25 +49,30 @@ The backend provides the following REST API endpoints:
     - `unitnumber` (string) - Unit identifier, max 50 characters
     - `project` (string) - Project developer name, max 255 characters
     - `description` (string, optional) - Detailed apartment description
-    - `images` (files, optional) - Zero or more image files for the apartment
+    - `image` (files, optional) - Zero or more image files for the apartment
   - Handles multiple image uploads
   - Validates all required fields before creation
 
 ### DELETE Endpoints
 - `/apartments/:id` - Delete a specific apartment by ID
-- `/wipe-apartments` - Development endpoint to clear all apartments (use with caution)
 
 ## Setup and Usage
 
 ### Prerequisites
 - Docker and Docker Compose installed on your system
-- Copy `.env.example` to `.env` and configure your environment variables
+- Copy `.env.example` to `.env`
 
 ### Running the Application
 Execute the following command in the root directory:
 
 ```bash
 docker compose up
+```
+
+Or to enusre that no dangling images or unused cache layers or dangling volumes remain :
+
+```bash
+docker compose up --build -d && docker system prune -f && docker volume prune -f
 ```
 
 This will:
@@ -77,7 +84,7 @@ The setup includes:
 - Hot-reloading for both frontend and backend development
 - Persistent PostgreSQL data storage
 
- Once the services are running, you can access the main page where you'll find:
+ Once the services are running, you can access the main page on `http://localhost:3000` where you'll find:
 
 - An "Add Apartment" button to create new apartment listings
 - Search fields to filter apartments based on different criteria
@@ -96,10 +103,6 @@ The application features a fully responsive design:
 - The apartment grid layout dynamically adjusts its column count based on screen width
   - For best demonstration of the responsive grid, create at least 5 apartment records and try resizing your browser window
 
-The application will be accessible at `http://localhost:3000` after the Docker containers are up and running.
-
-And the backend is also exposed at `http://localhost:8000`.
-
 ## Future Features
 
 The following features are planned for future releases:
@@ -116,8 +119,8 @@ The following features are planned for future releases:
     - Deployment to DigitalOcean Docker droplet
     - Cloudflare DNS records management
 
-    OR
+  OR
 
-    - Google Cloud Compute Engine
-      - Browser-based SSH access through Cloud Console
-      - No manual public/private key setup required only google account access
+  - Google Cloud Compute Engine
+    - Browser-based SSH access through Cloud Console
+    - No manual public/private key setup required only google account access
