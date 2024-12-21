@@ -84,7 +84,10 @@ The setup includes:
 - Hot-reloading for both frontend and backend development
 - Persistent PostgreSQL data storage
 
+For testing purposes, there are two sample images included in the `backend/src` directory: `test.jpg` `test 2.webp`
+
  Once the services are running, you can access the main page on `http://localhost:3000` where you'll find:
+
 
 - An "Add Apartment" button to create new apartment listings
 - Search fields to filter apartments based on different criteria
@@ -128,6 +131,7 @@ The following features are planned for future releases:
 - Production Configuration
   - Optimized Dockerfiles for production builds
   - Production-ready docker-compose
+  - nginx image
   - Dynamic environment variables:
     - API endpoints configured via ENV
     - Automatic host detection for fetch requests
