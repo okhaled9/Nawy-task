@@ -69,7 +69,7 @@ export default function AddApartmentModal({
     });
 
     try {
-      const res = await fetch("http://backend:8000/apartments", {
+      const res = await fetch("http://localhost:8000/apartments", {
         method: "POST",
         body: data
       });

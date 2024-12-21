@@ -27,7 +27,7 @@ export default function DeleteApartmentButton({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://backend:8000/apartments/${apartmentId}`,
+        `http://localhost:8000/apartments/${apartmentId}`,
         {
           method: "DELETE",
           credentials: "include"
