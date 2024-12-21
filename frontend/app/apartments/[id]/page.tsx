@@ -74,6 +74,13 @@ export default async function ApartmentPage({ params }: PageProps) {
 
         <div>
           <h1 className="mb-4 text-3xl font-bold">{apartment.title}</h1>
+          <div className="mb-6">
+            <h2 className="mb-2 text-lg font-semibold">Project Details</h2>
+            <div className="flex flex-col gap-2 text-gray-600">
+              <p>Project: {apartment.project}</p>
+              <p>Unit Number: {apartment.unitNumber}</p>
+            </div>
+          </div>
           <div className="mb-6 flex items-center gap-4">
             <div className="rounded-full bg-primary/10 px-4 py-2 text-primary">
               ${apartment.price.toLocaleString()}

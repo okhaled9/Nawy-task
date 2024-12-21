@@ -27,13 +27,17 @@ export default function AddApartmentModal({
     address: "",
     description: "",
     area: "",
-    price: ""
+    price: "",
+    unitNumber: "",
+    project: ""
   });
   const [errors, setErrors] = useState({
     title: false,
     address: false,
     area: false,
-    price: false
+    price: false,
+    unitNumber: false,
+    project: false
   });
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +51,9 @@ export default function AddApartmentModal({
       title: !formData.title,
       address: !formData.address,
       area: !formData.area || Number(formData.area) <= 0,
-      price: !formData.price || Number(formData.price) <= 0
+      price: !formData.price || Number(formData.price) <= 0,
+      unitNumber: !formData.unitNumber,
+      project: !formData.project
     };
 
     setErrors(newErrors);
@@ -118,6 +124,28 @@ export default function AddApartmentModal({
               setFormData({ ...formData, description: e.target.value })
             }
           />
+          <div className="mb-4 flex gap-4">
+            <Input
+              label="Unit Number"
+              placeholder="Enter unit number"
+              value={formData.unitNumber}
+              isInvalid={errors.unitNumber}
+              errorMessage={errors.unitNumber && "Unit number is required"}
+              onChange={(e) =>
+                setFormData({ ...formData, unitNumber: e.target.value })
+              }
+            />
+            <Input
+              label="Project"
+              placeholder="Enter project name"
+              value={formData.project}
+              isInvalid={errors.project}
+              errorMessage={errors.project && "Project is required"}
+              onChange={(e) =>
+                setFormData({ ...formData, project: e.target.value })
+              }
+            />
+          </div>
           <div className="flex gap-4">
             <Input
               type="number"
