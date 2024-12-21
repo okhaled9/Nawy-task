@@ -1,13 +1,15 @@
-import { pgTable, serial, integer, varchar } from "drizzle-orm/pg-core";
+import { pgTable, serial, integer, varchar, text } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const apartmentsTable = pgTable("apartments", {
   id: serial().primaryKey(),
   title: varchar({ length: 255 }).notNull(),
   address: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }),
+  description: text(),
   area: integer().notNull(),
   price: integer().notNull(),
+  unitnumber: varchar({ length: 50 }).notNull(),
+  project: varchar({ length: 255 }).notNull(),
 });
 
 export const apartmentsRelations = relations(apartmentsTable, ({ many }) => ({

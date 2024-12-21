@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import fastifyMultipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
+import fastifyCors from "@fastify/cors";
 import {
   checkServer,
   getApartments,
@@ -15,6 +16,11 @@ function server() {
   const fastify = Fastify({ logger: true });
 
   fastify.register(fastifyMultipart);
+  fastify.register(fastifyCors, {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  });
   fastify.register(fastifyStatic, {
     root: imageFolderPath,
     prefix: "/static/",

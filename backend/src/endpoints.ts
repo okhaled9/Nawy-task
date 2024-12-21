@@ -49,6 +49,8 @@ export async function createApartment(
     address: "",
     area: 0,
     price: 0,
+    unitnumber: "",
+    project: "",
   };
 
   for await (const part of parts) {
