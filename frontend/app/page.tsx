@@ -1,6 +1,5 @@
 import { ApartmentInterface } from "../components/ApartmentCard";
-import ApartmentCard from "../components/ApartmentCard";
-import Empty from "../components/Empty";
+import HomeWrapper from "../components/HomeWrapper";
 
 async function getApartments(): Promise<ApartmentInterface[]> {
   try {
@@ -22,16 +21,7 @@ export default async function Home() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">Available Apartments</h1>
-      {apartments.length === 0 ? (
-        <Empty />
-      ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {apartments.map((apartment) => (
-            <ApartmentCard key={apartment.id} apartment={apartment} />
-          ))}
-        </div>
-      )}
+      <HomeWrapper apartments={apartments} />
     </main>
   );
 }
