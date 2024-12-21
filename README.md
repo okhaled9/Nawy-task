@@ -109,3 +109,15 @@ The following features are planned for future releases:
 - Google Maps Integration
   - Visual representation of apartment locations
   - Quick access to directions
+
+- GitHub Workflows
+  - Automated linting pipeline
+  - CI/CD pipeline with:
+    - Deployment to DigitalOcean Docker droplet
+    - Cloudflare DNS records management
+
+    OR
+
+    - Google Cloud Compute Engine
+      - Browser-based SSH access through Cloud Console
+      - No manual public/private key setup required only google account access
