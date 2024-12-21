@@ -79,7 +79,7 @@ export default function MainWrapper({ children }: MainWrapperProps) {
       <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-between md:flex-row">
-            <div className="relative mb-6 h-20 w-60 md:mb-0">
+            <div className="relative mb-6 h-12 w-32 sm:h-14 sm:w-40 md:mb-0 md:h-16 md:w-48">
               <Image
                 src="/Nawy_Logo.png"
                 alt="Nawy Logo"
