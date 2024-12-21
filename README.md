@@ -1,6 +1,52 @@
 # Nawy
 
-A web application for managing and searching apartment listings.
+A web application for managing apartment listings.
+
+## Technologies
+
+### Frontend
+- Next.js - React framework for production
+- NextUI - Modern component library
+- Tailwind CSS - Utility-first CSS framework
+- Prettier - Code formatter for consistent styling
+
+### Backend
+- Fastify - Fast and lightweight web framework
+  - Fastify Multipart - Plugin for handling file uploads
+  - Fastify Static - Plugin for serving static images
+  - Fastify CORS - Plugin for Cross-Origin Resource Sharing
+- Drizzle ORM - High-performance TypeScript ORM
+  - Type-safe
+  - Intuitive schema creation and query building
+  - High level database migrations
+  - Superior performance compared to other ORMs
+
+## API Endpoints
+
+The backend provides the following REST API endpoints:
+
+### GET Endpoints
+- `/check` - Health check endpoint to verify server status
+- `/apartments` - Retrieve all apartment listings
+- `/apartments/:id` - Get details of a specific apartment by ID
+
+### POST Endpoints
+- `/apartments` - Create a new apartment listing
+  - Accepts multipart form data with the following required fields:
+    - `title` (string) - Apartment listing title, max 255 characters
+    - `address` (string) - Location address, max 255 characters
+    - `area` (number) - Apartment area in square meters
+    - `price` (number) - Apartment price
+    - `unitnumber` (string) - Unit identifier, max 50 characters
+    - `project` (string) - Project developer name, max 255 characters
+    - `description` (string, optional) - Detailed apartment description
+    - `images` (files, optional) - Zero or more image files for the apartment
+  - Handles multiple image uploads
+  - Validates all required fields before creation
+
+### DELETE Endpoints
+- `/apartments/:id` - Delete a specific apartment by ID
+- `/wipe-apartments` - Development endpoint to clear all apartments (use with caution)
 
 ## Setup and Usage
 
@@ -35,3 +81,5 @@ The application features a fully responsive design:
   - For best demonstration of the responsive grid, create at least 5 apartment records and try resizing your browser window
 
 The application will be accessible at `http://localhost:3000` after the Docker containers are up and running.
+
+And the backend is also exposed at `http://localhost:8000`.
