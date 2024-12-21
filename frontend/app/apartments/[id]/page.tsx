@@ -1,8 +1,8 @@
 import { ApartmentInterface } from "@/components/ApartmentCard";
 import { Button } from "@nextui-org/react";
-import Image from "next/image";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
+import ImageGallery from "@/components/ImageGallery";
 
 async function getApartment(id: string): Promise<ApartmentInterface | null> {
   try {
@@ -21,13 +21,12 @@ async function getApartment(id: string): Promise<ApartmentInterface | null> {
   }
 }
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function ApartmentPage({ params }: PageProps) {
-  const { id } = await params;
-  const apartment = await getApartment(id);
+export default async function ApartmentPage({
+  params
+}: {
+  params: { id: string };
+}) {
+  const apartment = await getApartment(params.id);
 
   if (!apartment) {
     return (
@@ -69,17 +68,7 @@ export default async function ApartmentPage({ params }: PageProps) {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-200">
-          {apartment.images?.[0] && (
-            <Image
-              src={`http://localhost:8000/static/${apartment.images[0].path}`}
-              alt={apartment.title}
-              width={1280}
-              height={720}
-              className="h-full w-full object-cover"
-            />
-          )}
-        </div>
+        <ImageGallery images={apartment.images || []} title={apartment.title} />
 
         <div>
           <h1 className="mb-4 text-3xl font-bold">{apartment.title}</h1>
