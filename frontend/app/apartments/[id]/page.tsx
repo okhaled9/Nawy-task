@@ -21,12 +21,13 @@ async function getApartment(id: string): Promise<ApartmentInterface | null> {
   }
 }
 
-export default async function ApartmentPage({
-  params
-}: {
-  params: { id: string };
-}) {
-  const apartment = await getApartment(params.id);
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ApartmentPage({ params }: PageProps) {
+  const { id } = await params;
+  const apartment = await getApartment(id);
 
   if (!apartment) {
     return (
