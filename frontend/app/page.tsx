@@ -3,7 +3,7 @@ import HomeWrapper from "../components/HomeWrapper";
 
 async function getApartments(): Promise<ApartmentInterface[]> {
   try {
-    const res = await fetch("http://localhost:8000/apartments");
+    const res = await fetch("http://backend:8000/apartments");
 
     if (!res.ok) {
       console.log("fetching error");

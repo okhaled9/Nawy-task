@@ -30,7 +30,7 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
   return (
     <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-200">
       <Image
-        src={`http://localhost:8000/static/${images[currentIndex].path}`}
+        src={`http://backend:8000/static/${images[currentIndex].path}`}
         alt={`${title} - Image ${currentIndex + 1}`}
         width={1280}
         height={720}

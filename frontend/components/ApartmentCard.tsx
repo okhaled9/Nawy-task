@@ -30,7 +30,7 @@ export default function ApartmentCard({
       <div className="relative bg-gray-200">
         {apartment.images?.[0] && (
           <Image
-            src={`http://localhost:8000/static/${apartment.images[0].path}`}
+            src={`http://backend:8000/static/${apartment.images[0].path}`}
             alt={apartment.title}
             width={640}
             height={360}

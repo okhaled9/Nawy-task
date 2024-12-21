@@ -7,7 +7,7 @@ import ImageGallery from "@/components/ImageGallery";
 
 async function getApartment(id: string): Promise<ApartmentInterface | null> {
   try {
-    const res = await fetch(`http://localhost:8000/apartments/${id}`, {
+    const res = await fetch(`http://backend:8000/apartments/${id}`, {
       cache: "no-store"
     });
 

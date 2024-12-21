@@ -27,17 +27,19 @@ export default function DeleteApartmentButton({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/apartments/${apartmentId}`,
+        `http://backend:8000/apartments/${apartmentId}`,
         {
-          method: "DELETE"
+          method: "DELETE",
+          credentials: "include"
         }
       );
 
-      if (!response.ok) {
+      if (response.status === 204) {
+        router.refresh();
+        router.push("/");
+      } else {
         throw new Error("Failed to delete apartment");
       }
-
-      router.push("/");
     } catch (error) {
       console.error("Error deleting apartment:", error);
       setIsModalOpen(false);
