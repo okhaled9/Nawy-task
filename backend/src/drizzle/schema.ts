@@ -8,7 +8,7 @@ export const apartmentsTable = pgTable("apartments", {
   description: text(),
   area: integer().notNull(),
   price: integer().notNull(),
-  unitNumber: varchar({ length: 50 }).notNull(),
+  unitnumber: varchar({ length: 50 }).notNull(),
   project: varchar({ length: 255 }).notNull(),
 });
 

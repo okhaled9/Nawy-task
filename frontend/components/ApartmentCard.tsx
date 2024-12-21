@@ -14,7 +14,7 @@ export interface ApartmentInterface {
   description?: string;
   area: number;
   price: number;
-  unitNumber: string;
+  unitnumber: string;
   project: string;
   images?: ApartmentImage[];
 }
@@ -43,7 +43,7 @@ export default function ApartmentCard({
       <div className="p-4">
         <h3 className="mb-2 text-lg font-semibold">{apartment.title}</h3>
         <p className="mb-2 text-sm text-gray-600">
-          {apartment.project} • Unit {apartment.unitNumber}
+          {apartment.project} • Unit {apartment.unitnumber}
         </p>
         <p className="mb-2 text-sm text-gray-600">{apartment.address}</p>
         {apartment.description && (

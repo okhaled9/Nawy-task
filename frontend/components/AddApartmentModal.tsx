@@ -28,7 +28,7 @@ export default function AddApartmentModal({
     description: "",
     area: "",
     price: "",
-    unitNumber: "",
+    unitnumber: "",
     project: ""
   });
   const [errors, setErrors] = useState({
@@ -36,7 +36,7 @@ export default function AddApartmentModal({
     address: false,
     area: false,
     price: false,
-    unitNumber: false,
+    unitnumber: false,
     project: false
   });
 
@@ -52,7 +52,7 @@ export default function AddApartmentModal({
       address: !formData.address,
       area: !formData.area || Number(formData.area) <= 0,
       price: !formData.price || Number(formData.price) <= 0,
-      unitNumber: !formData.unitNumber,
+      unitnumber: !formData.unitnumber,
       project: !formData.project
     };
 
@@ -128,11 +128,11 @@ export default function AddApartmentModal({
             <Input
               label="Unit Number"
               placeholder="Enter unit number"
-              value={formData.unitNumber}
-              isInvalid={errors.unitNumber}
-              errorMessage={errors.unitNumber && "Unit number is required"}
+              value={formData.unitnumber}
+              isInvalid={errors.unitnumber}
+              errorMessage={errors.unitnumber && "Unit number is required"}
               onChange={(e) =>
-                setFormData({ ...formData, unitNumber: e.target.value })
+                setFormData({ ...formData, unitnumber: e.target.value })
               }
             />
             <Input

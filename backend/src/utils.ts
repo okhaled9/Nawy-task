@@ -19,7 +19,7 @@ export type ApartmentWithImages = {
   description: string | null;
   area: number;
   price: number;
-  unitNumber: string | null;
+  unitnumber: string | null;
   project: string | null;
   images: {
     id: number;
@@ -154,7 +154,7 @@ export function processFormField(
     case "title":
     case "address":
     case "description":
-    case "unitNumber":
+    case "unitnumber":
     case "project":
       apartment[fieldname] = value;
       break;
@@ -173,8 +173,12 @@ export function validateApartment(
   apartment: typeof apartmentsTable.$inferInsert
 ): boolean {
   return Boolean(
-    apartment.title && apartment.address && apartment.area && apartment.price && 
-    apartment.unitNumber && apartment.project
+    apartment.title &&
+      apartment.address &&
+      apartment.area &&
+      apartment.price &&
+      apartment.unitnumber &&
+      apartment.project
   );
 }
 

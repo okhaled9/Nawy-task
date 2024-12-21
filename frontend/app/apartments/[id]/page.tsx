@@ -78,7 +78,7 @@ export default async function ApartmentPage({ params }: PageProps) {
             <h2 className="mb-2 text-lg font-semibold">Project Details</h2>
             <div className="flex flex-col gap-2 text-gray-600">
               <p>Project: {apartment.project}</p>
-              <p>Unit Number: {apartment.unitNumber}</p>
+              <p>Unit Number: {apartment.unitnumber}</p>
             </div>
           </div>
           <div className="mb-6 flex items-center gap-4">

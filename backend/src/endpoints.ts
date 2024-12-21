@@ -49,7 +49,7 @@ export async function createApartment(
     address: "",
     area: 0,
     price: 0,
-    unitNumber: "",
+    unitnumber: "",
     project: "",
   };
 
