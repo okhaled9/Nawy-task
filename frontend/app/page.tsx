@@ -4,9 +4,7 @@ import Empty from "../components/Empty";
 
 async function getApartments(): Promise<ApartmentInterface[]> {
   try {
-    const res = await fetch("http://localhost:8000/apartments", {
-      next: { revalidate: 60 }
-    });
+    const res = await fetch("http://localhost:8000/apartments");
 
     if (!res.ok) {
       console.log("fetching error");
