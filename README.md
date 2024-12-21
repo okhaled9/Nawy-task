@@ -119,8 +119,15 @@ The following features are planned for future releases:
     - Deployment to DigitalOcean Docker droplet
     - Cloudflare DNS records management
 
-  OR
+    OR
 
-  - Google Cloud Compute Engine
-    - Browser-based SSH access through Cloud Console
-    - No manual public/private key setup required only google account access
+    - Google Cloud Compute Engine
+      - Browser-based SSH access through Cloud Console
+      - No manual public/private key setup required only google account access
+
+- Production Configuration
+  - Optimized Dockerfiles for production builds
+  - Production-ready docker-compose
+  - Dynamic environment variables:
+    - API endpoints configured via ENV
+    - Automatic host detection for fetch requests
