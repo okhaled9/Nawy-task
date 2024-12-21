@@ -83,3 +83,13 @@ The application features a fully responsive design:
 The application will be accessible at `http://localhost:3000` after the Docker containers are up and running.
 
 And the backend is also exposed at `http://localhost:8000`.
+
+## Future Features
+
+The following features are planned for future releases:
+
+- Dark Mode Toggle
+
+- Google Maps Integration
+  - Visual representation of apartment locations
+  - Quick access to directions
