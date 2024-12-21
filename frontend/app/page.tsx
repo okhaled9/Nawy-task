@@ -7,7 +7,6 @@ async function getApartments(): Promise<ApartmentInterface[]> {
 
     if (!res.ok) {
       console.log("fetching error");
-      return [];
     }
 
     return res.json();

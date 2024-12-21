@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AddApartmentModal from "./AddApartmentModal";
+import FilterApartments from "./FilterApartments";
 import HomeHeader from "./HomeHeader";
 import Empty from "./Empty";
 import { ApartmentInterface } from "./ApartmentCard";
@@ -13,15 +14,20 @@ interface HomeWrapperProps {
 
 export default function HomeWrapper({ apartments }: HomeWrapperProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filteredApartments, setFilteredApartments] = useState(apartments);
 
   return (
     <>
       <HomeHeader onAddClick={() => setIsModalOpen(true)} />
-      {apartments.length === 0 ? (
+      <FilterApartments
+        apartments={apartments}
+        onFilterChange={setFilteredApartments}
+      />
+      {filteredApartments.length === 0 ? (
         <Empty onAddClick={() => setIsModalOpen(true)} />
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {apartments.map((apartment) => (
+          {filteredApartments.map((apartment) => (
             <ApartmentCard key={apartment.id} apartment={apartment} />
           ))}
         </div>
