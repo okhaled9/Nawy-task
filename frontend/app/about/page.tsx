@@ -32,7 +32,6 @@ export default function About() {
           </p>
         </div>
 
-        {/* Leadership Section */}
         <div className="transform rounded-xl border border-gray-200 bg-white p-8 shadow-sm transition-transform duration-300 hover:scale-105">
           <h2 className="mb-4 text-2xl font-semibold text-blue-600">
             Leadership
@@ -45,7 +44,6 @@ export default function About() {
           </p>
         </div>
 
-        {/* Innovation Section */}
         <div className="transform rounded-xl border border-gray-200 bg-white p-8 shadow-sm transition-transform duration-300 hover:scale-105">
           <h2 className="mb-4 text-2xl font-semibold text-teal-600">
             Innovation
