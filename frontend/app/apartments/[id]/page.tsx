@@ -69,7 +69,7 @@ export default async function ApartmentPage({ params }: PageProps) {
         </Button>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr,2fr,auto]">
+      <div className="grid gap-8 lg:grid-cols-[2fr,1.5fr,auto]">
         <ImageGallery images={apartment.images || []} title={apartment.title} />
 
         <div>
