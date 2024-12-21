@@ -20,6 +20,13 @@ A web application for managing apartment listings.
   - Intuitive schema creation and query building
   - High level database migrations
   - Superior performance compared to other ORMs
+- PostgreSQL - Relational database
+  - Perfect for structured data like apartment listings
+
+### Infrastructure
+- Docker
+  - Consistent development environment
+  - Easy deployment across different platforms
 
 ## API Endpoints
 
@@ -50,7 +57,12 @@ The backend provides the following REST API endpoints:
 
 ## Setup and Usage
 
-To run the project for the first time, execute the following command in the root directory:
+### Prerequisites
+- Docker and Docker Compose installed on your system
+- Copy `.env.example` to `.env` and configure your environment variables
+
+### Running the Application
+Execute the following command in the root directory:
 
 ```bash
 docker compose up
@@ -60,6 +72,10 @@ This will:
 - Build and start both the frontend and backend services
 - Set up the necessary database connections
 - Install all required dependencies
+
+The setup includes:
+- Hot-reloading for both frontend and backend development
+- Persistent PostgreSQL data storage
 
  Once the services are running, you can access the main page where you'll find:
 
